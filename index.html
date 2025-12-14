@@ -1,64 +1,166 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>GitGrade – GitHub Repository Analyzer</title>
+  <meta charset="UTF-8">
+  <title>GitGrade AI – GitHub Repository Analyzer</title>
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 14px;
+      width: 420px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 8px;
+      background: #667eea;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #5a67d8;
+    }
+
+    pre {
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 15px;
+      white-space: pre-wrap;
+      font-size: 13px;
+      color: #222;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      margin-top: 15px;
+      color: #777;
+    }
+  </style>
 </head>
+
 <body>
 
-<h2>GitGrade – GitHub Repository Analyzer</h2>
+  <div class="card">
+    <h2>🤖 GitGrade AI</h2>
 
-<input type="text" id="repoUrl" placeholder="Paste GitHub Repo URL" size="50">
-<br><br>
-<button onclick="analyzeRepo()">Analyze</button>
+    <input type="text" id="repoUrl" placeholder="Paste GitHub Repository URL">
 
-<pre id="result"></pre>
+    <button onclick="analyzeRepo()">Analyze Repository</button>
 
-<script>
-async function analyzeRepo() {
-  const url = document.getElementById("repoUrl").value;
-  const result = document.getElementById("result");
-  result.textContent = "Analyzing...";
+    <pre id="result"></pre>
 
-  try {
-    const parts = url.split("/");
-    const owner = parts[3];
-    const repo = parts[4];
+    <div class="footer">
+      AI-inspired GitHub Repository Evaluation
+    </div>
+  </div>
 
-    const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
-    const repoData = await repoRes.json();
+  <script>
+    async function analyzeRepo() {
+      const url = document.getElementById("repoUrl").value.trim();
+      const result = document.getElementById("result");
 
-    const commitsRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/commits`);
-    const commits = await commitsRes.json();
+      if (!url) {
+        result.textContent = "Please enter a GitHub repository URL.";
+        return;
+      }
 
-    let score = 0;
-    let roadmap = [];
+      result.textContent = "🤖 AI is analyzing the repository...\n\n";
 
-    if (repoData.description) score += 20;
-    else roadmap.push("Add a clear project description");
+      try {
+        const parts = url.split("/");
+        const owner = parts[3];
+        const repo = parts[4];
 
-    if (repoData.language) score += 20;
-    else roadmap.push("Specify main programming language");
+        const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+        const repoData = await repoRes.json();
 
-    if (commits.length >= 5) score += 20;
-    else roadmap.push("Increase commit frequency with meaningful messages");
+        const commitsRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/commits`);
+        const commits = await commitsRes.json();
 
-    if (repoData.stargazers_count >= 1) score += 20;
-    else roadmap.push("Improve project usefulness to gain stars");
+        let score = 0;
+        let roadmap = [];
 
-    score += 20; // basic structure assumption
+        if (repoData.description) {
+          score += 20;
+        } else {
+          roadmap.push("Add a clear project description in the repository");
+        }
 
-    let summary = score >= 70
-      ? "The repository has a good foundation but can be improved further."
-      : "The repository is basic and needs significant improvement.";
+        if (repoData.language) {
+          score += 20;
+        } else {
+          roadmap.push("Specify and organize the main programming language");
+        }
 
-    result.textContent =
-      `Score: ${score}/100\n\nSummary:\n${summary}\n\nRoadmap:\n- ${roadmap.join("\n- ")}`;
+        if (commits.length >= 5) {
+          score += 20;
+        } else {
+          roadmap.push("Increase commit frequency with meaningful messages");
+        }
 
-  } catch (error) {
-    result.textContent = "Invalid GitHub repository URL.";
-  }
-}
-</script>
+        if (repoData.stargazers_count >= 1) {
+          score += 20;
+        } else {
+          roadmap.push("Improve project usefulness and visibility to gain stars");
+        }
+
+        score += 20; // basic project structure assumption
+
+        let summary;
+        if (score >= 80) {
+          summary = "AI Feedback: This repository shows strong structure, consistency, and real-world readiness.";
+        } else if (score >= 60) {
+          summary = "AI Feedback: The repository has a good foundation but needs improvements in documentation and consistency.";
+        } else {
+          summary = "AI Feedback: The repository is in an early stage and requires structural and development improvements.";
+        }
+
+        result.textContent =
+          `Score: ${score}/100\n\n` +
+          `Summary:\n${summary}\n\n` +
+          `Personalized Improvement Roadmap:\n- ${roadmap.join("\n- ")}`;
+
+      } catch (error) {
+        result.textContent = "Invalid GitHub repository URL or network error.";
+      }
+    }
+  </script>
 
 </body>
 </html>
