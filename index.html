@@ -1,166 +1,234 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>GitGrade AI – GitHub Repository Analyzer</title>
+<meta charset="UTF-8">
+<title>GitGrade AI</title>
 
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      min-height: 100vh;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
 
-    .card {
-      background: #ffffff;
-      padding: 30px;
-      border-radius: 14px;
-      width: 420px;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
-    }
+* { box-sizing: border-box; }
 
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-      color: #333;
-    }
+body {
+  font-family: 'Inter', sans-serif;
+  background: radial-gradient(circle at top, #7f7cff, #1f1c2c);
+  min-height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    input {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 14px;
-      margin-bottom: 10px;
-    }
+.glass {
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(18px);
+  border-radius: 20px;
+  padding: 35px;
+  width: 480px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.4);
+}
 
-    button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      border: none;
-      border-radius: 8px;
-      background: #667eea;
-      color: white;
-      font-size: 15px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
+h1 {
+  text-align: center;
+  color: #fff;
+  margin-bottom: 6px;
+}
 
-    button:hover {
-      background: #5a67d8;
-    }
+.subtitle {
+  text-align: center;
+  color: #ddd;
+  font-size: 13px;
+  margin-bottom: 22px;
+}
 
-    pre {
-      background: #f5f5f5;
-      padding: 15px;
-      border-radius: 8px;
-      margin-top: 15px;
-      white-space: pre-wrap;
-      font-size: 13px;
-      color: #222;
-    }
+input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  outline: none;
+  font-size: 14px;
+}
 
-    .footer {
-      text-align: center;
-      font-size: 12px;
-      margin-top: 15px;
-      color: #777;
-    }
-  </style>
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 14px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #7f7cff, #5f5bff);
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.output {
+  margin-top: 20px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 14px;
+  padding: 18px;
+  font-size: 13px;
+  color: #222;
+  white-space: pre-wrap;
+}
+
+.badge {
+  display: inline-block;
+  background: #5f5bff;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  margin-bottom: 10px;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 18px;
+  font-size: 11px;
+  color: #ccc;
+}
+</style>
 </head>
 
 <body>
 
-  <div class="card">
-    <h2>🤖 GitGrade AI</h2>
+<div class="glass">
+  <h1>GitGrade AI</h1>
+  <div class="subtitle">Real GitHub Repository Analysis</div>
 
-    <input type="text" id="repoUrl" placeholder="Paste GitHub Repository URL">
+  <input id="repoUrl" placeholder="https://github.com/username/repository">
+  <button onclick="analyzeRepo()">Analyze Repository</button>
 
-    <button onclick="analyzeRepo()">Analyze Repository</button>
+  <div id="result" class="output"></div>
 
-    <pre id="result"></pre>
+  <div class="footer">Powered by GitHub REST API</div>
+</div>
 
-    <div class="footer">
-      AI-inspired GitHub Repository Evaluation
-    </div>
-  </div>
+<script>
+async function analyzeRepo() {
+  const input = document.getElementById("repoUrl").value.trim();
+  const result = document.getElementById("result");
 
-  <script>
-    async function analyzeRepo() {
-      const url = document.getElementById("repoUrl").value.trim();
-      const result = document.getElementById("result");
+  if (!input.startsWith("https://github.com/")) {
+    result.textContent = "❌ Please enter a valid GitHub repository URL.";
+    return;
+  }
 
-      if (!url) {
-        result.textContent = "Please enter a GitHub repository URL.";
-        return;
-      }
+  let cleanUrl = input.replace(/\/+$/, "").replace(".git", "");
+  const parts = cleanUrl.split("/");
 
-      result.textContent = "🤖 AI is analyzing the repository...\n\n";
+  if (parts.length < 5) {
+    result.textContent = "❌ Invalid GitHub repository URL format.";
+    return;
+  }
 
-      try {
-        const parts = url.split("/");
-        const owner = parts[3];
-        const repo = parts[4];
+  const owner = parts[3];
+  const repo = parts[4];
 
-        const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
-        const repoData = await repoRes.json();
+  result.innerHTML = "<span class='badge'>Analyzing</span>\n\nFetching repository data...";
 
-        const commitsRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/commits`);
-        const commits = await commitsRes.json();
+  try {
+    const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
 
-        let score = 0;
-        let roadmap = [];
-
-        if (repoData.description) {
-          score += 20;
-        } else {
-          roadmap.push("Add a clear project description in the repository");
-        }
-
-        if (repoData.language) {
-          score += 20;
-        } else {
-          roadmap.push("Specify and organize the main programming language");
-        }
-
-        if (commits.length >= 5) {
-          score += 20;
-        } else {
-          roadmap.push("Increase commit frequency with meaningful messages");
-        }
-
-        if (repoData.stargazers_count >= 1) {
-          score += 20;
-        } else {
-          roadmap.push("Improve project usefulness and visibility to gain stars");
-        }
-
-        score += 20; // basic project structure assumption
-
-        let summary;
-        if (score >= 80) {
-          summary = "AI Feedback: This repository shows strong structure, consistency, and real-world readiness.";
-        } else if (score >= 60) {
-          summary = "AI Feedback: The repository has a good foundation but needs improvements in documentation and consistency.";
-        } else {
-          summary = "AI Feedback: The repository is in an early stage and requires structural and development improvements.";
-        }
-
-        result.textContent =
-          `Score: ${score}/100\n\n` +
-          `Summary:\n${summary}\n\n` +
-          `Personalized Improvement Roadmap:\n- ${roadmap.join("\n- ")}`;
-
-      } catch (error) {
-        result.textContent = "Invalid GitHub repository URL or network error.";
-      }
+    // 🔥 CORRECT ERROR HANDLING
+    if (repoRes.status === 404) {
+      result.textContent = "❌ Repository not found. Please check the URL.";
+      return;
     }
-  </script>
+
+    if (repoRes.status === 403) {
+      result.textContent =
+        "⚠️ GitHub API rate limit exceeded.\n\n" +
+        "Please wait 1–2 minutes or try again later.\n\n" +
+        "This happens because GitHub limits anonymous requests.";
+      return;
+    }
+
+    if (!repoRes.ok) {
+      result.textContent = "❌ Unable to fetch repository data.";
+      return;
+    }
+
+    const repoData = await repoRes.json();
+
+    const commitsRes = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/commits?per_page=100`
+    );
+    const commits = commitsRes.ok ? await commitsRes.json() : [];
+
+    const readmeRes = await fetch(
+      `https://api.github.com/repos/${owner}/${repo}/readme`
+    );
+    const hasReadme = readmeRes.ok;
+
+    let score = 0;
+    let details = [];
+    let roadmap = [];
+
+    if (repoData.description) {
+      score += 10;
+      details.push("✔ Repository has a description.");
+    } else {
+      roadmap.push("Add a clear project description.");
+    }
+
+    if (repoData.language) {
+      score += 10;
+      details.push(`✔ Primary language: ${repoData.language}.`);
+    } else {
+      roadmap.push("Define the main programming language.");
+    }
+
+    if (hasReadme) {
+      score += 15;
+      details.push("✔ README file is present.");
+    } else {
+      roadmap.push("Add a README with setup and usage instructions.");
+    }
+
+    if (commits.length >= 20) {
+      score += 25;
+      details.push("✔ Strong commit consistency.");
+    } else if (commits.length >= 5) {
+      score += 15;
+      details.push("✔ Moderate commit activity.");
+      roadmap.push("Increase commit frequency.");
+    } else {
+      roadmap.push("Very few commits. Commit regularly.");
+    }
+
+    if (repoData.stargazers_count >= 5) {
+      score += 20;
+      details.push("✔ Community interest detected.");
+    } else {
+      roadmap.push("Improve usefulness to gain stars.");
+    }
+
+    if (repoData.open_issues_count === 0) {
+      score += 10;
+      details.push("✔ No open issues.");
+    } else {
+      roadmap.push("Resolve or manage open issues.");
+    }
+
+    const level =
+      score >= 80 ? "Advanced" :
+      score >= 50 ? "Intermediate" : "Beginner";
+
+    result.innerHTML =
+      `<span class="badge">Score: ${score}/100 (${level})</span>\n\n` +
+      `📊 Detailed Analysis:\n- ${details.join("\n- ")}\n\n` +
+      `🧠 Summary:\nThis repository is classified as ${level} based on real GitHub data.\n\n` +
+      `🛠️ Improvement Roadmap:\n- ${roadmap.join("\n- ")}`;
+
+  } catch (err) {
+    result.textContent =
+      "❌ Network error.\n\nPlease check your internet connection and try again.";
+  }
+}
+</script>
 
 </body>
 </html>
