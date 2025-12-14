@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GitGrade – GitHub Repository Analyzer</title>
+</head>
+<body>
+
+<h2>GitGrade – GitHub Repository Analyzer</h2>
+
+<input type="text" id="repoUrl" placeholder="Paste GitHub Repo URL" size="50">
+<br><br>
+<button onclick="analyzeRepo()">Analyze</button>
+
+<pre id="result"></pre>
+
+<script>
+async function analyzeRepo() {
+  const url = document.getElementById("repoUrl").value;
+  const result = document.getElementById("result");
+  result.textContent = "Analyzing...";
+
+  try {
+    const parts = url.split("/");
+    const owner = parts[3];
+    const repo = parts[4];
+
+    const repoRes = await fetch(`https://api.github.com/repos/${owner}/${repo}`);
+    const repoData = await repoRes.json();
+
+    const commitsRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/commits`);
+    const commits = await commitsRes.json();
+
+    let score = 0;
+    let roadmap = [];
+
+    if (repoData.description) score += 20;
+    else roadmap.push("Add a clear project description");
+
+    if (repoData.language) score += 20;
+    else roadmap.push("Specify main programming language");
+
+    if (commits.length >= 5) score += 20;
+    else roadmap.push("Increase commit frequency with meaningful messages");
+
+    if (repoData.stargazers_count >= 1) score += 20;
+    else roadmap.push("Improve project usefulness to gain stars");
+
+    score += 20; // basic structure assumption
+
+    let summary = score >= 70
+      ? "The repository has a good foundation but can be improved further."
+      : "The repository is basic and needs significant improvement.";
+
+    result.textContent =
+      `Score: ${score}/100\n\nSummary:\n${summary}\n\nRoadmap:\n- ${roadmap.join("\n- ")}`;
+
+  } catch (error) {
+    result.textContent = "Invalid GitHub repository URL.";
+  }
+}
+</script>
+
+</body>
+</html>
