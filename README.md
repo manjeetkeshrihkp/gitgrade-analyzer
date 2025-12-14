@@ -1,126 +1,136 @@
 # 🚀 GitGrade Analyzer
+### AI-Powered GitHub Repository Intelligence Platform
 
-**GitGrade Analyzer** is an AI-powered GitHub repository analysis tool that evaluates a public repository and converts it into a **Score**, **Smart Summary**, and a **Personalized Improvement Roadmap** — similar to feedback from a senior developer or recruiter.
+GitGrade Analyzer transforms public GitHub repositories into **actionable insights** by generating a **Quality Score**, **Professional Evaluation Summary**, and a **Personalized Improvement Roadmap** — simulating feedback from an experienced engineer or technical recruiter.
 
-🔗 **Live Demo:** https://manjeetkeshrihkp.github.io/gitgrade-analyzer/
-
----
-
-## 🎯 Purpose
-
-In today’s tech-driven hiring ecosystem, a GitHub repository represents a developer’s real skill. However, many students and early developers are unsure:
-- How clean and readable their code is
-- Whether their project structure looks professional
-- If their commits and documentation meet industry standards
-
-**GitGrade Analyzer acts as a “Repository Mirror”**, reflecting the true strengths and weaknesses of a GitHub project.
+🔗 **Live Platform:** https://manjeetkeshrihkp.github.io/gitgrade-analyzer/
 
 ---
 
-## 🧠 What GitGrade Analyzer Does
+## 🎥 Product Walkthrough
 
-### 1️⃣ Accepts GitHub Repository URL
-Users paste a **public GitHub repository link** to start the analysis.
+[![GitGrade Analyzer Demo](https://img.youtube.com/vi/0LRID97dw-Y/maxresdefault.jpg)](https://youtu.be/0LRID97dw-Y)
 
-### 2️⃣ Automatically Analyzes Repository Data
-The system evaluates publicly available signals such as:
-- Folder and file structure
-- Code quality & readability
-- README and documentation quality
-- Test presence and maintainability
-- Commit history & consistency
-- Language and tech stack usage
-- Git best practices
-- Real-world project relevance
-
-### 3️⃣ AI-Powered Evaluation
-Repositories are analyzed across:
-- Code clarity & organization
-- Project structure
-- Documentation depth
-- Maintainability
-- Development consistency
-- Practical usefulness
-
-### 4️⃣ Intelligent Outputs
-
-#### ✅ Score / Rating
-- Numeric score (0–100)
-- Skill level (Beginner / Intermediate / Advanced)
-
-#### 📝 Summary
-A concise, recruiter-style evaluation of the repository.
-
-**Example:**
-> “The project has clean structure and consistent commits, but lacks tests and detailed documentation.”
-
-#### 🛣️ Personalized Roadmap
-Actionable improvement steps such as:
-- Improve folder structure
-- Add or enhance README
-- Write unit/integration tests
-- Follow meaningful commit practices
-- Improve code readability
-- Introduce CI/CD workflows
+▶️ Click the preview to watch the full end-to-end demo.
 
 ---
 
-## ✨ Advanced Features
+## 🧩 Why GitGrade Analyzer?
 
-- 🎨 **Ultra-modern dashboard UI** with animations
-- 📊 **Interactive charts & visual analytics**
-- 🤖 **AI-written code detection (experimental)**
-- 📈 Language usage & commit activity graphs
-- ⚡ Smooth transitions and responsive layout
+A GitHub repository is the most transparent representation of a developer’s real-world skills — yet most students and early-stage developers lack clarity on how their work appears to recruiters.
 
----
-
-## 🛠️ Tech Stack
-
-- **Frontend:** HTML, CSS, JavaScript
-- **UI/UX:** Modern dashboard design with animations
-- **Hosting:** GitHub Pages
-- **Analysis Logic:** Rule-based + heuristic evaluation
+**GitGrade Analyzer acts as a repository intelligence layer**, revealing:
+- Code quality and structural maturity  
+- Documentation and maintainability gaps  
+- Development consistency and best-practice adherence  
+- Real-world relevance of the project  
 
 ---
 
-## 📌 Use Cases
+## 🧠 Platform Architecture & Workflow
 
-- Students evaluating projects before internships
-- Developers improving GitHub profiles
-- Mentors reviewing repositories
-- Hackathons and academic evaluations
+### 1️⃣ Repository Intake
+Users submit a **public GitHub repository URL** for analysis.
+
+### 2️⃣ Signal Extraction Layer
+GitGrade evaluates publicly available repository signals including:
+- Project structure and file organization
+- Code readability and maintainability
+- Documentation quality (README & guides)
+- Test presence and project robustness
+- Commit history patterns and consistency
+- Language distribution and tech stack
+- Git usage best practices
+- Practical and real-world applicability
+
+### 3️⃣ Intelligence & Evaluation Engine
+The extracted signals are analyzed across multiple dimensions:
+- Code clarity and structural design
+- Documentation depth and usability
+- Maintainability and scalability readiness
+- Development discipline and consistency
+- Overall project maturity
+
+### 4️⃣ Output Generation Layer
+
+#### 📊 Repository Score
+- Quantitative score (0–100)
+- Qualitative skill level classification  
+  *(Beginner · Intermediate · Advanced)*
+
+#### 📝 Professional Evaluation Summary
+A concise, recruiter-style assessment highlighting strengths and weaknesses.
+
+**Example:**  
+> “The repository demonstrates solid structure and consistent development practices, but lacks automated testing and comprehensive documentation.”
+
+#### 🛣️ Personalized Improvement Roadmap
+Context-aware, actionable recommendations such as:
+- Structuring folders for scalability
+- Writing production-grade README documentation
+- Introducing unit and integration tests
+- Improving commit discipline and messaging
+- Enhancing code readability and modularity
+- Implementing CI/CD pipelines
 
 ---
 
-## 🚧 Limitations
+## ✨ Advanced Capabilities
 
-- Works only with **public repositories**
-- AI-written code detection is heuristic-based
-- No private or paid API usage
+- 🎨 Ultra-modern dashboard UI with motion-based transitions  
+- 📊 Interactive data visualizations and analytics  
+- 🤖 Experimental AI-generated code pattern detection  
+- 📈 Language usage, commit trends, and health indicators  
+- 📱 Fully responsive, device-agnostic design  
 
 ---
 
-## 🌱 Future Enhancements
+## 🛠️ Technology Stack
 
-- GitHub OAuth login
-- Repository comparison
-- Recruiter-mode evaluation
-- CI/CD & issue analysis
-- Downloadable PDF reports
+- **Frontend:** HTML, CSS, JavaScript  
+- **UI/UX:** Modern dashboard design with animations  
+- **Hosting:** GitHub Pages  
+- **Evaluation Logic:** Rule-based + heuristic intelligence  
+
+---
+
+## 🎯 Primary Use Cases
+
+- Students preparing repositories for internships and placements  
+- Developers optimizing GitHub profiles for visibility  
+- Mentors conducting structured repository reviews  
+- Hackathons and academic project evaluations  
+
+---
+
+## ⚠️ Known Limitations
+
+- Analysis limited to **public GitHub repositories**
+- AI-written code detection is heuristic and advisory
+- Private repositories and paid APIs are not accessed
+
+---
+
+## 🌱 Roadmap & Future Enhancements
+
+- GitHub OAuth authentication  
+- Side-by-side repository comparisons  
+- Recruiter-focused evaluation mode  
+- CI/CD, issues, and PR analysis  
+- Exportable PDF evaluation reports  
 
 ---
 
 ## 👤 Author
 
 **Manjeet**  
-Computer Science Student | AI & Code Analysis Enthusiast
+Computer Science Student · AI & Code Analysis Enthusiast  
 
 ---
 
-## ⭐ Support
+## ⭐ Support & Feedback
 
-If you find this project useful, consider starring the repository.
+If GitGrade Analyzer adds value to your workflow, consider starring the repository and sharing feedback.
 
-> *GitGrade Analyzer — Turn your GitHub repo into a clear skill signal.*
+> **GitGrade Analyzer** — *Turning GitHub repositories into measurable skill intelligence.*
 
